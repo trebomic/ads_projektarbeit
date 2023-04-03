@@ -1,0 +1,56 @@
+import os
+import requests
+import PyPDF2
+import fitz
+
+# URL der Webseite mit den PDF-Dateien
+## TODO: Add URL. 
+## url = 'https://...'
+
+# Speicherort für die Text-Datei(en)
+output_folder = 'output'
+
+# Pruefe, ob der Ordner bereits vorhanden ist, wenn nicht, erstelle ihn
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
+
+# Liste der PDF-Dateien auf der Webseite herunterladen
+response = requests.get(url)
+pdf_urls = []
+for line in response.iter_lines():
+    line = line.decode('utf-8')
+    if line.endswith('.pdf'):
+        pdf_urls.append(url + line)
+
+# Jede PDF-Datei herunterladen und in Text umwandeln
+for pdf_url in pdf_urls:
+    # PDF-Datei herunterladen
+    response = requests.get(pdf_url)
+    filename = pdf_url.split('/')[-1]
+    with open(filename, 'wb') as file:
+        file.write(response.content)
+
+    # PDF-Datei oeffnen
+    with open(filename, 'rb') as file:
+        # PyPDF2 benutzen, um PDF-Datei zu lesen
+        pdf_reader = PyPDF2.PdfFileReader(file)
+
+        # Anzahl der Seiten im PDF-Dokument
+        num_pages = pdf_reader.getNumPages()
+
+        # PDF-Datei mit PyMuPDF oeffnen
+        with fitz.open(filename) as doc:
+            for page_number in range(num_pages):
+                # Seite aus PyMuPDF-Dokument extrahieren
+                page = doc.loadPage(page_number)
+
+                # Seite in Text umwandeln
+                text = page.getText()
+
+                # Text in Datei speichern
+                text_filename = os.path.join(output_folder, f'{filename}_{page_number+1}.txt')
+                with open(text_filename, 'w', encoding='utf-8') as text_file:
+                    text_file.write(text)
+
+    # PDF-Datei loeschen
+    os.remove(filename)
