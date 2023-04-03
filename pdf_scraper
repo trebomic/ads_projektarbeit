@@ -3,18 +3,18 @@ import requests
 import PyPDF2
 import fitz
 
-# URL der Webseite mit den PDF-Dateien
+# URL of the website with the PDF files
 ## TODO: Add URL. 
 ## url = 'https://...'
 
-# Speicherort für die Text-Datei(en)
+# Location for the text file(s)
 output_folder = 'output'
 
-# Pruefe, ob der Ordner bereits vorhanden ist, wenn nicht, erstelle ihn
+# Check if the folder already exists, if not, create it
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-# Liste der PDF-Dateien auf der Webseite herunterladen
+# Download list of PDF files on the website
 response = requests.get(url)
 pdf_urls = []
 for line in response.iter_lines():
@@ -22,35 +22,35 @@ for line in response.iter_lines():
     if line.endswith('.pdf'):
         pdf_urls.append(url + line)
 
-# Jede PDF-Datei herunterladen und in Text umwandeln
+# Download any PDF file and convert it to text
 for pdf_url in pdf_urls:
-    # PDF-Datei herunterladen
+    # Download PDF file
     response = requests.get(pdf_url)
     filename = pdf_url.split('/')[-1]
     with open(filename, 'wb') as file:
         file.write(response.content)
 
-    # PDF-Datei oeffnen
+    # Open PDF file
     with open(filename, 'rb') as file:
-        # PyPDF2 benutzen, um PDF-Datei zu lesen
+        # Use PyPDF2 to read PDF file
         pdf_reader = PyPDF2.PdfFileReader(file)
 
-        # Anzahl der Seiten im PDF-Dokument
+        # Number of pages in PDF document
         num_pages = pdf_reader.getNumPages()
 
-        # PDF-Datei mit PyMuPDF oeffnen
+        # Open PDF file with PyMuPDF
         with fitz.open(filename) as doc:
             for page_number in range(num_pages):
-                # Seite aus PyMuPDF-Dokument extrahieren
+                # Extract page from PyMuPDF document
                 page = doc.loadPage(page_number)
 
-                # Seite in Text umwandeln
+                # Convert page to text
                 text = page.getText()
 
-                # Text in Datei speichern
+                # Save text to file
                 text_filename = os.path.join(output_folder, f'{filename}_{page_number+1}.txt')
                 with open(text_filename, 'w', encoding='utf-8') as text_file:
                     text_file.write(text)
 
-    # PDF-Datei loeschen
+    # Delete PDF file
     os.remove(filename)
