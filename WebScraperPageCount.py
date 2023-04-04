@@ -138,7 +138,7 @@ class WebScraper:
         pageNumber = 1
         MaxPageNumberHomeGate = WebScraper.extractPageCountHomeGate()
         while pageNumber <= MaxPageNumberHomeGate:
-            
+
             jsonData = WebScraper.extractJSONForHomeGate(self, pageNumber)
             infoMatrix = WebScraper.createInformationMatrix(self, jsonData,
                                                             self.firstJSONParameterHome,
