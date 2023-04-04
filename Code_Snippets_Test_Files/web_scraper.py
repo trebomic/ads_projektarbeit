@@ -12,6 +12,9 @@ url = "https://www.immoscout24.ch/en/real-estate/rent/country-switzerland-fl"
 response = requests.get(url, headers=headers)
 print(response)
 soup = BeautifulSoup(response.content, "html.parser")
+print(soup)
+# max_page= soup.find_all('a ref', class_='Box-cYFBPY PseudoBox-fXdOzA Shell-fTlxHA dRMJRg kCClcz gfKtRI')
+# print (max_page)
 #print (soup)
 #heading = soup.find_all(name='h3', class_='Box-cYFBPY hKJGPR Heading-dlrjyy bVzSiN')
 #heading_data = heading.text
@@ -37,7 +40,7 @@ for list in lists:
 
 result = [item.split(',') for item in info]
 #result2 = [item.split(',') for item in result]
-print (result)
+# print (result)
 
 
 fields = ['Strasse','Ort','Kanton','Zimmer','m2','Preis']
