@@ -1,11 +1,14 @@
+# TODO mitr: Fix file with the three urls
+
 import os
 import requests
 import PyPDF2
 import fitz
 
 # URL of the website with the PDF files
-## TODO: Add URL. 
-## url = 'https://...'
+url = 'https://opendata.swiss/de/dataset/schweizerischer-wohnimmobilienpreisindex'
+url = 'https://opendata.swiss/de/dataset/schweizerischer-wohnimmobilienpreisindex-impi'
+url = 'https://opendata.swiss/de/dataset/schweizerischer-wohnimmobilienpreisindex-4q-2019-100'
 
 # Location for the text file(s)
 output_folder = 'output'
