@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+
+  jupyter:
+    container_name: ads_project_container
+    build:
+        context: .
+        dockerfile: Dockerfile
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+    volumes:
+      - jupyter:/home/jovyan/work
+    ports:
+      - "8888:8888"
+    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"
+  
+  db:
+    container_name: ads_project_db_container
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: ads_project_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  jupyter:
+  pgdata:
+  
+  
+  
