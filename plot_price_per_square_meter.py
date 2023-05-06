@@ -19,6 +19,6 @@ df['price_per_sqm'] = df['flat_price_chf'] / df['flat_size']
 
 # Erstellen des Scatterplots für die Preis pro Quadratmeter
 plt.scatter(df['flat_size'], df['price_per_sqm'])
-plt.xlabel('Größe der Wohnung (in m²)')
+plt.xlabel('Grösse der Wohnung (in m²)')
 plt.ylabel('Preis pro Quadratmeter (in CHF/m²)')
 plt.show()
