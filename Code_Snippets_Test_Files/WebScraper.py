@@ -9,23 +9,34 @@ class WebScraper:
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
     firstJSONParameterImmo = 'listData'
-    columnCaptionsImmo = ['Number of Rooms', 'Size [m²]', 'Price [CHF]', 'Street', 'Zip Code', 'City', 'State']
+    columnCaptionsImmo = ['Number of Rooms', 'Size [m²]', 'Price [CHF]', 'Street', 'Zip Code', 'City', 'Latitude', 'Longitude', 'State']
     jsonKeyValuesImmo = [['numberOfRooms'],
                          ['surfaceLiving'],
                          ['grossPrice'],
                          ['street'],
                          ['zip'],
                          ['cityName'],
+                         ['latitude'],
+                         ['longitude'],
                          ['state']]
 
     firstJSONParameterHome = 'listings'
-    columnCaptionsHome = ['Number of Rooms', 'Size [m²]', 'Price [CHF]', 'Street', 'Zip Code', 'City']
+    columnCaptionsHome = ['Number of Rooms', 'Size [m²]', 'Price [CHF]', 'Street', 'Zip Code', 'City', 'Latitude', 'Logitude']
     jsonKeyValuesHome = [['listing', 'characteristics', 'livingSpace'],
                          ['listing', 'characteristics', 'numberOfRooms'],
                          ['listing', 'prices', 'rent', 'gross'],
                          ['listing', 'address', 'street'],
                          ['listing', 'address', 'postalCode'],
-                         ['listing', 'address', 'locality']]
+                         ['listing', 'address', 'locality'],
+                         ['listing', 'address', 'geoCoordinates','latitude'],
+                         ['listing', 'address', 'geoCoordinates','longitude']]
+    
+    def extracthtmlForHomeGate(self):
+        # Get the HTML Response and trim it.
+        url = "https://www.homegate.ch/rent/real-estate/country-switzerland/matching-list?ep=2"
+        response = requests.get(url, headers=WebScraper.header)
+        htmlResponse = BeautifulSoup(response.content, "html.parser").find_all("script")
+        print(htmlResponse)
 
     def extractJSONForImmoScout(self, pageNumber):
         print(pageNumber)
@@ -123,8 +134,11 @@ class WebScraper:
 
 
 if __name__ == '__main__':
-    dfImmo = WebScraper().runImmo()
+    # WebScraper().extracthtmlForHomeGate()
+    # dfImmo = WebScraper().runImmo()
+    # print(dfImmo)
     dfHome = WebScraper().runHome()
+    print(dfHome)
 
-    data = pd.concat([dfHome, dfImmo])
-    data.to_excel('Output.xlsx', index=False)
+    # data = pd.concat([dfHome, dfImmo])
+    # data.to_excel('Output.xlsx', index=False)
