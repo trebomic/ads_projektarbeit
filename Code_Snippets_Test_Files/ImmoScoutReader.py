@@ -49,10 +49,12 @@ class ImmoScoutReader:
 
     def run(self):
         htmlResponse = ImmoScoutReader.getHTMLResponse(self)
-        informations = ImmoScoutReader.extractJSON(self, htmlResponse)
-        infoMatrix = ImmoScoutReader.createInformationMatrix(self, informations)
-        dataFrame = ImmoScoutReader.createPandasDataFrame(self, infoMatrix)
-        dataFrame.to_excel('output.xlsx', index=False)
+        print(htmlResponse)
+        # informations = ImmoScoutReader.extractJSON(self, htmlResponse)
+        
+        # infoMatrix = ImmoScoutReader.createInformationMatrix(self, informations)
+        # dataFrame = ImmoScoutReader.createPandasDataFrame(self, infoMatrix)
+        # dataFrame.to_excel('output.xlsx', index=False)
 
 
 if __name__ == '__main__':
