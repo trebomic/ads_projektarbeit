@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
+from sklearn.metrics import mean_squared_error, r2_score
+
 # Laden des Excel-Files in ein Pandas DataFrame
 df = pd.read_excel('output_for_plot.xlsx')
 
@@ -53,3 +55,17 @@ plt.xlabel('Wohnungsgrösse (in m²)')
 plt.ylabel('Preis (in CHF)')
 plt.legend()
 plt.show()
+
+# RMSE und R-Squared für PLZ-Gruppe mit 8 berechnen
+y_8_rmse = mean_squared_error(y_8, y_8_pred, squared=False)
+y_8_r2 = r2_score(y_8, y_8_pred)
+
+# RMSE und R-Squared für PLZ-Gruppe mit 9 berechnen
+y_9_rmse = mean_squared_error(y_9, y_9_pred, squared=False)
+y_9_r2 = r2_score(y_9, y_9_pred)
+
+# Ausgabe der Ergebnisse
+print('RMSE Zürich:', y_8_rmse)
+print('R-Squared Zürich:', y_8_r2)
+print('RMSE St. Gallen:', y_9_rmse)
+print('R-Squared St. Gallen:', y_9_r2)
